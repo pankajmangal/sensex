@@ -4,8 +4,8 @@ import 'package:sensex/utils/color_helper.dart';
 
 import '../../utils/gap_helper.dart';
 
-class LiveMarketItemScreen extends StatelessWidget {
-  LiveMarketItemScreen({Key? key, required this.index,
+class LiveMarketItemView extends StatelessWidget {
+  LiveMarketItemView({Key? key, required this.index,
     required this.liveMarketIndex}) : super(key: key);
 
   final int index;

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sensex/home/controller/home_controller.dart';
-import 'package:sensex/home/view/live_market_item_screen.dart';
+import 'package:sensex/home/view/invest_item_view.dart';
+import 'package:sensex/utils/color_helper.dart';
 import 'package:sensex/utils/gap_helper.dart';
 import 'package:sensex/utils/image_helper.dart';
+
+import 'live_market_item_view.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -17,7 +20,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         body: Stack(
           children: [
-            Container(color: const Color(0xff171A3F),),
+            Container(color: const Color(0xff171A3F)),
             Positioned(
               top: 0,
               left: 0,
@@ -36,7 +39,12 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SingleChildScrollView(
+            Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: SingleChildScrollView(
               child: Column(
                 children: [
                   Column(
@@ -249,7 +257,7 @@ class HomeScreen extends StatelessWidget {
                                   scrollDirection: Axis.horizontal,
                                   itemCount: _homeController.liveMarketData.length,
                                   itemBuilder: (BuildContext context, int index)
-                                  => LiveMarketItemScreen(index: index,
+                                  => LiveMarketItemView(index: index,
                                       liveMarketIndex: _homeController.liveMarketData[index]),
                                 )),
                               )
@@ -261,9 +269,9 @@ class HomeScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Container(
-                          padding: const EdgeInsets.all(14.0),
+                          // padding: const EdgeInsets.all(14.0),
                           width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * 0.23,
+                          height: MediaQuery.of(context).size.height * 0.47,
                           decoration: BoxDecoration(
                               color: const Color(0xffD9D9D9).withOpacity(0.2),
                               borderRadius: BorderRadius.circular(12.0)
@@ -271,43 +279,152 @@ class HomeScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text("INVESTMENT OVERVIEW",
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Color(0xffF3D19E),
-                                    fontWeight: FontWeight.w700
+                              Container(
+                                width: Get.width,
+                                height: 80,
+                                padding: const EdgeInsets.all(14.0),
+                                decoration: const BoxDecoration(
+                                  color: bottomNavColor,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(12.0),
+                                    topRight: Radius.circular(12.0)
+                                  )
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        const Text("INVESTMENT OVERVIEW",
+                                          style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Color(0xffF3D19E),
+                                              fontWeight: FontWeight.w700
 
-                                ),),
-                              const VerticalGap(gap: 8.0),
-                              Row(
-                                children: const [
-                                  Text("86 Lakhs",
-                                    style: TextStyle(
-                                        fontSize: 20.0,
-                                        color: Color(0xffC6E6FF),
-                                        fontWeight: FontWeight.w500
-                                    ),),
-                                  HorizontalGap(gap: 12.0),
-                                  Text("45k | 2.3%",
-                                    style: TextStyle(
-                                        fontSize: 15.0,
-                                        color: Color(0xffFFFFFF),
-                                        fontWeight: FontWeight.w500
-                                    ),),
-                                  HorizontalGap(gap: 6.0),
-                                  Icon(Icons.arrow_upward, color: Colors.greenAccent, size: 20,)
-                                ],
+                                          ),),
+                                        const VerticalGap(gap: 8.0),
+                                        Row(
+                                          children: const [
+                                            Text("86 Lakhs",
+                                              style: TextStyle(
+                                                  fontSize: 20.0,
+                                                  color: Color(0xffC6E6FF),
+                                                  fontWeight: FontWeight.w500
+                                              ),),
+                                            HorizontalGap(gap: 12.0),
+                                            Text("45k | 2.3%",
+                                              style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  color: Color(0xffFFFFFF),
+                                                  fontWeight: FontWeight.w500
+                                              ),),
+                                            HorizontalGap(gap: 6.0),
+                                            Icon(Icons.arrow_upward, color: Colors.greenAccent, size: 20,)
+                                          ],
+                                        )
+                                      ],
+                                    ),
+
+                                    ElevatedButton(onPressed: (){}, style: const ButtonStyle(
+                                        backgroundColor: MaterialStatePropertyAll<Color>(Colors.black26)
+                                    ), child: const Text("View",
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          color: whiteColor,
+                                          fontWeight: FontWeight.w700
+
+                                      ),))
+                                  ],
+                                ),
                               ),
+                              const VerticalGap(gap: 16),
 
+                              SizedBox(
+                                height: Get.height * 0.35,
+                                child: Obx(() => GridView.builder(
+                                  itemCount: _homeController.investmentData.length,
+                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: /*(orientation == Orientation.portrait) ? 2 :*/ 3,
+                                  crossAxisSpacing: 0.0,
+                                  mainAxisSpacing: 22.0),
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return InvestItemView(index: index,
+                                        investment: _homeController.investmentData[index]);
+                                  },
+                                )),
+                              )
                             ],
                           ),
                         ),
                       ),
+                      /*Container(
+                        margin: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            image: DecorationImage(
+                              image: AssetImage(referBGImage),
+                              fit: BoxFit.cover,
+                            )),
+                        child: ,
+                      ),*/
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Container(
+                            padding: const EdgeInsets.all(14.0),
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.23,
+                            decoration: BoxDecoration(
+                                color: const Color(0xffD9D9D9).withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(12.0)
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text("REFER A FRIEND",
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Color(0xffF3D19E),
+                                            fontWeight: FontWeight.w700
+
+                                        ),),
+                                      const VerticalGap(gap: 8.0),
+                                      const Text("SHARE A WORD WITH YOUR FRIEND AND EARN 500 WORTH OF GOLD.",
+                                        style: TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.w400
+                                        ),),
+                                      const VerticalGap(gap: 12.0),
+                                      ElevatedButton(onPressed: (){}, child: const Text("Send Invite",
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: whiteColor,
+                                            fontWeight: FontWeight.w500
+                                        ),)),
+                                      const VerticalGap(gap: 12.0),
+                                      const Text("*T&C Applied",
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.w500
+                                        ),),
+
+                                    ],
+                                  ),
+                                ),
+                                Expanded(child: Image.asset(referImage))
+                              ],
+                            )
+                        ),
+                      )
                     ],
                   )
                 ],
               ),
-            )
+            ))
           ],
         ),
         bottomNavigationBar: bottomNavBar()
