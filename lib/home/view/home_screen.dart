@@ -342,6 +342,7 @@ class HomeScreen extends StatelessWidget {
                               SizedBox(
                                 height: Get.height * 0.35,
                                 child: Obx(() => GridView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount: _homeController.investmentData.length,
                                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: /*(orientation == Orientation.portrait) ? 2 :*/ 3,
@@ -357,16 +358,6 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      /*Container(
-                        margin: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12.0),
-                            image: DecorationImage(
-                              image: AssetImage(referBGImage),
-                              fit: BoxFit.cover,
-                            )),
-                        child: ,
-                      ),*/
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Container(
@@ -432,8 +423,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget bottomNavBar() => Container(
-    height: 80,
+  Widget bottomNavBar() => Obx(() => Container(
+    height: 64,
     decoration: const BoxDecoration(
       color: Color(0xff171A3F),
       borderRadius: BorderRadius.only(
@@ -445,63 +436,91 @@ class HomeScreen extends StatelessWidget {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(Icons.person,size: 40, color: Colors.grey,),
-            VerticalGap(gap: 4.0),
-            Text("snapshot",
-              style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey,
-                  fontSize: 13.0
-              ),)
-          ],
+        InkWell(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _homeController.pageIndex.value == 0
+                  ? const Icon(Icons.person,size: 32, color: whiteColor,)
+                  : const Icon(Icons.person,size: 32, color: Colors.grey,),
+              const VerticalGap(gap: 4.0),
+              Text("snapshot",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: _homeController.pageIndex.value == 0 ? whiteColor : Colors.grey,
+                    fontSize: 14.0
+                ),)
+            ],
+          ),
+          onTap: (){
+            _homeController.pageIndex.value = 0;
+          },
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(holdingImage, width: 40, height: 40,),
-            const VerticalGap(gap: 4.0),
-            const Text("holdings",
-              style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey,
-                  fontSize: 13.0
-              ),)
-          ],
+        InkWell(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _homeController.pageIndex.value == 1
+                  ? Image.asset(holdingImage, width: 32, height: 32, color: whiteColor,)
+                  : Image.asset(holdingImage, width: 32, height: 32),
+              const VerticalGap(gap: 4.0),
+              Text("holdings",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: _homeController.pageIndex.value == 1 ? whiteColor : Colors.grey,
+                    fontSize: 14.0
+                ),)
+            ],
+          ),
+          onTap: (){
+            _homeController.pageIndex.value = 1;
+          },
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(investmentImage, width: 40, height: 40,),
-            const VerticalGap(gap: 4.0),
-            const Text("investments",
-              style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey,
-                  fontSize: 13.0
-              ),)
-          ],
+        InkWell(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _homeController.pageIndex.value == 2
+                  ? Image.asset(investmentImage, width: 32, height: 32, color: whiteColor,)
+                  : Image.asset(investmentImage, width: 32, height: 32),
+              const VerticalGap(gap: 4.0),
+              Text("investments",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: _homeController.pageIndex.value == 2 ? whiteColor : Colors.grey,
+                    fontSize: 14.0
+                ),)
+            ],
+          ),
+          onTap: (){
+            _homeController.pageIndex.value = 2;
+          },
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(Icons.person,size: 40, color: Colors.white,),
-            VerticalGap(gap: 4.0),
-            Text("profile",
-              style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
-                  fontSize: 13.0
-              ),)
-          ],
-        ),
+        InkWell(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _homeController.pageIndex.value == 3
+                  ? const Icon(Icons.person,size: 32, color: whiteColor,)
+                  : const Icon(Icons.person,size: 32, color: Colors.grey,),
+              const VerticalGap(gap: 4.0),
+              Text("profile",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: _homeController.pageIndex.value == 3 ? whiteColor : Colors.grey,
+                    fontSize: 14.0
+                ),)
+            ],
+          ),
+          onTap: (){
+            _homeController.pageIndex.value = 3;
+          },
+        )
       ],
     ),
-  );
+  ));
 }

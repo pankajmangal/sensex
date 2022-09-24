@@ -7,6 +7,7 @@ class HomeController extends GetxController {
 
   RxList liveMarketData = [].obs;
   RxList investmentData = [].obs;
+  RxInt pageIndex = 0.obs;
 
   @override
   void onInit() {
